@@ -1,0 +1,31 @@
+.general-bread-cramp-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  padding: 0 var(--page-padding);
+  text-align: left;
+  overflow-x: scroll;
+  margin-bottom: calc(var(--page-padding) / 2);
+}
+
+.general-each-bread-cramp-item, .general-each-bread-cramp-arrow {
+  font-size: var(--text-font-size);
+  color: var(--black);
+  opacity: 0.8;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: default;
+  margin-right: var(--small-distance);
+}
+.general-each-bread-cramp-item:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.general-each-bread-cramp-item-last {
+  font-size: var(--text-font-size);
+  color: var(--blue);
+  opacity: 1;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: default;
+}

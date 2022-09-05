@@ -1,0 +1,99 @@
+.general-confirm-outer-wrapper {
+  position: absolute;
+  z-index: 10;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(1, 1, 1, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.general-confirm-wrapper {
+  position: absolute;
+  padding: var(--content-margin);
+  max-width: calc(100vw - 2 * var(--page-padding));
+  width: 550px;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  top: 20px;
+}
+
+.general-confirm-title {
+  font-size: var(--title-font-size);
+  color: var(--black);
+  font-weight: 700;
+  margin-bottom: var(--small-distance);
+}
+
+.general-confirm-text {
+  font-size: var(--text-font-size);
+  line-height: var(--text-line-height);
+  color: var(--light-black);
+  font-weight: 500;
+  margin-bottom: var(--content-margin);
+  width: 100%;
+  white-space: initial !important;
+}
+
+.general-confirm-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+.general-confirm-no-button {
+  border: var(--bold-border-width) solid var(--red);
+  border-radius: 7px;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: var(--red);
+  font-weight: 500;
+  font-size: 14px;
+  opacity: 0.8;
+}
+.general-confirm-no-button:hover {
+  opacity: 1;
+}
+.general-confirm-yes-button {
+  border: var(--bold-border-width) solid var(--blue);
+  border-radius: 7px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-left: 15px;
+  color: var(--blue);
+  font-weight: 500;
+  font-size: 14px;
+  opacity: 0.8;
+}
+.general-confirm-yes-button:hover {
+  opacity: 1;
+}
+
+.general-slide-down-animation-class {
+  animation: slideDown 0.1s ease-in-out 0s 1 forwards;
+  -webkit-animation: slideDown 0.1s ease-in-out 0s 1 forwards;
+}
+
+@keyframes slideDown {
+  from {
+    top: 20px;
+  }
+  to {
+    top: 100px
+  }
+}
+@-webkit-keyframes slideDown {
+  from {
+    top: 20px;
+  }
+  to {
+    top: 100px
+  }
+}
+

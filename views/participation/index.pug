@@ -1,0 +1,35 @@
+extends ../partials/header
+block main
+  .general-title Branş Katılımı (#{participation.season})
+  .general-bread-cramp-wrapper
+    a.general-each-bread-cramp-item(href='/') Ana Sayfa
+    .general-each-bread-cramp-arrow >
+    .general-each-bread-cramp-item-last Branş Katılımı (#{participation.season})
+  .general-form-outer-wrapper
+    .general-form-wrapper
+      .general-form-input-title Branş Katılımı (#{participation.season})
+      if participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime()
+        .general-form-input-info Bu sezonun branşlarını #{participation_update_start_date_format} - #{participation_update_end_date_format} tarihleri arasında güncelleyebilirsiniz.
+      else
+        .general-form-error(style='margin-bottom: var(--content-margin)') Bu sezona ait branşları artık güncelleyemezsiniz.
+      .general-form-button-wrapper
+        a.general-form-back-button(href='/') Vazgeç
+        if participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime()
+          .general-form-button#save-button Güncelle
+      .general-form-error#error
+    .general-form-wrapper
+      .general-form-input-title Seçilen Branşlar
+      if !participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime() 
+        .general-checked-input-wrapper#branches-input
+          each branch in branches
+            if participation.branch_id_list.includes(branch._id.toString())
+              .general-checked-input-item.general-checked-input-item-selected(id='checked-input-' + branch._id)= branch.name
+            else
+              .general-checked-input-item(id='checked-input-' + branch._id)= branch.name
+      else
+        .general-checked-input-wrapper#branches-input
+          each branch in branches
+            if participation.branch_id_list.includes(branch._id.toString())
+              .general-checked-input-item-not-allowed.general-checked-input-item-selected= branch.name
+            else
+              .general-checked-input-item-not-allowed= branch.name

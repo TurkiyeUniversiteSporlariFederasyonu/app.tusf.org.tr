@@ -1,0 +1,14 @@
+extends ../partials/head
+block content
+  .all-wrapper
+    .general-form-outer-wrapper
+      .general-form-left-column
+      .general-form-right-column
+        form.general-form-wrapper#form
+          .general-title Kullanıcı Girişi
+          a.lost-password-link(href='/auth/password') Şifremi Unuttum
+          input.general-text-input#email-input(type='email' placeholder='Lütfen e-posta adresinizi yazın' autofocus autocomplete='none')
+          input.general-text-input#password-input(type='password' placeholder='Lütfen şifrenizi yazın' autocomplete='none')
+          .general-form-button-wrapper
+            button.general-form-button Giriş Yap
+          .general-form-error#error

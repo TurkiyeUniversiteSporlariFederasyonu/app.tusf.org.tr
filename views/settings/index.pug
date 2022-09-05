@@ -1,0 +1,25 @@
+extends ../partials/header
+block main
+  .general-title Kullanıcı Ayarları
+  .general-bread-cramp-wrapper
+    a.general-each-bread-cramp-item(href='/') Ana Sayfa
+    .general-each-bread-cramp-arrow >
+    .general-each-bread-cramp-item-last Kullanıcı Ayarları
+  .general-form-outer-wrapper
+    .general-form-wrapper
+      .general-form-input-title.general-form-input-title-required E-Posta Adresi
+      .general-text-input-small-not-allowed=user.email
+      .general-form-button-wrapper
+        a.general-form-back-button(href='/') Vazgeç
+        .general-form-button#save-button Kaydet
+      .general-form-error#error
+    .general-form-wrapper
+      .general-form-input-title.general-form-input-title-required Adı Soyadı
+      input.general-text-input-small#name-input(type='text' placeholder='Adı Soyadı' value=user.name)
+      .general-form-input-title.general-form-input-title-required TC Kimlik No
+      input.general-text-input-small#title-input(type='text' placeholder='TC Kimlik No' value=user.id_number)
+      .general-form-input-title.general-form-input-title-required Telefon Numarası
+      input.general-text-input-small#phone-input(type='text' placeholder='Telefon Numarası (0XXX XXX XX XX)' value=user.phone_number)
+      .general-form-input-title.general-form-input-title-required Ünvanı
+      input.general-text-input-small#title-input(type='text' placeholder='Ünvanı' value=user.title)
+      

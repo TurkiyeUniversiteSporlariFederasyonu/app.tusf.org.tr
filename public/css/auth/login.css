@@ -1,0 +1,24 @@
+.general-title {
+  padding: 0 !important;
+}
+
+.all-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lost-password-link {
+  margin-left: auto;
+  margin-bottom: var(--small-distance);
+  color: var(--light-black);
+  font-size: var(--text-font-size);
+  font-weight: 500;
+  text-decoration: none;
+}
+.lost-password-link:hover {
+  text-decoration: underline;
+}

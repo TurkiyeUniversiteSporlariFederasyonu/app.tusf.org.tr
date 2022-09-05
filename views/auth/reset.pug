@@ -1,0 +1,15 @@
+extends ../partials/head
+block content
+  input.display-none#id(value=JSON.stringify(id))
+  input.display-none#token(value=JSON.stringify(token))
+  .all-wrapper
+    .general-form-outer-wrapper
+      .general-form-left-column
+      .general-form-right-column
+          form.general-form-wrapper#form
+            .general-title Şifreyi Sıfırla (#{email})
+            input.general-text-input#password-input(type='password' placeholder='Lütfen yeni şifrenizi yazın' autofocus autocomplete='none')
+            input.general-text-input#confirm-password-input(type='password' placeholder='Lütfen yeni şifrenizi onaylayın' autocomplete='none')
+            .general-form-button-wrapper
+              button.general-form-button Şifreyi Sıfırla
+            .general-form-error#error

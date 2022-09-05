@@ -1,0 +1,13 @@
+extends ../partials/header
+block main
+  .general-title Geçmiş Senelerdeki Branş Katılımı
+  .general-bread-cramp-wrapper
+    a.general-each-bread-cramp-item(href='/') Ana Sayfa
+    .general-each-bread-cramp-arrow >
+    .general-each-bread-cramp-item-last Geçmiş Senelerdeki Branş Katılımı
+  .general-list-wrapper
+    each participation in participations
+      .general-each-list-item(id=participation.season)
+        svg.general-each-list-item-button.view-participation-button(viewBox='0 0 576 448' fill='var(--blue)' xmlns='http://www.w3.org/2000/svg')
+          path(d='M288 0C207.2 0 142.5 36.8 95.3999 80.6C48.5999 124 17.2999 176 2.4999 211.7C-0.800098 219.6 -0.800098 228.4 2.4999 236.3C17.2999 272 48.5999 324 95.3999 367.4C142.5 411.2 207.2 448 288 448C368.8 448 433.5 411.2 480.6 367.4C527.4 323.9 558.7 272 573.6 236.3C576.9 228.4 576.9 219.6 573.6 211.7C558.7 176 527.4 124 480.6 80.6C433.5 36.8 368.8 0 288 0ZM432 224C432 303.5 367.5 368 288 368C208.5 368 144 303.5 144 224C144 144.5 208.5 80 288 80C367.5 80 432 144.5 432 224ZM288 160C288 195.3 259.3 224 224 224C212.5 224 201.7 221 192.4 215.6C192.2 218.4 192 221.1 192 224C192 277 235 320 288 320C341 320 384 277 384 224C384 171 341 128 288 128C285.2 128 282.4 128.1 279.6 128.4C284.9 137.7 288 148.5 288 160Z')
+        .general-each-list-item-title #{participation.season}

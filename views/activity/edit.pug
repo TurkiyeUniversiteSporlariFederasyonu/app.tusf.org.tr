@@ -1,0 +1,105 @@
+extends ../partials/header
+block main
+  input.display-none#activity(value=JSON.stringify(activity))
+  .general-title Faaliyeti Düzenle
+  .general-bread-cramp-wrapper
+    a.general-each-bread-cramp-item(href='/') Ana Sayfa
+    .general-each-bread-cramp-arrow >
+    a.general-each-bread-cramp-item(href='/activity') Faaliyetler
+    .general-each-bread-cramp-arrow >
+    .general-each-bread-cramp-item-last Faaliyeti Düzenle
+  .general-form-outer-wrapper
+    .general-form-left-column
+      .general-form-wrapper
+        .general-form-input-title.general-form-input-title-required Branş
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#branch-id-input(type='text' value=activity.branch._id)
+          input.general-select-input-search#branch-search-input(type='text' value=activity.branch.name placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#branch-options-wrapper
+            each branch in branches
+              .general-select-input-each-option(id='select-input-' + branch._id.toString())= branch.name
+        .general-form-input-title.general-form-input-title-required Sezon
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#season-input(type='text' value=(parseInt(activity.season.split('-')[0].trim())))
+          input.general-select-input-search#season-search-input(type='text' value=activity.season placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#season-options-wrapper
+            - for (let i = ((new Date()).getFullYear()); i >= ((new Date()).getFullYear() - 10); i--)
+              .general-select-input-each-option(id='select-input-' + i)= i + ' - ' + (i+1)
+        .general-form-input-title.general-form-input-title-required Tip
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#type-input(type='text' value=activity.type)
+          input.general-select-input-search#type-search-input(type='text' value=activity.type placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#type-options-wrapper
+            each type_item in types
+              .general-select-input-each-option(id='select-input-' + type_item)= type_item
+        .general-form-input-title.general-form-input-title-required Etap
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#stage-input(type='text' value=activity.stage)
+          input.general-select-input-search#stage-search-input(type='text' value=activity.stage placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#stage-options-wrapper
+            each stage in stages
+              .general-select-input-each-option(id='select-input-' + stage)= stage
+        .general-form-input-title.general-form-input-title-required Üniversite
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#university-id-input(type='text' value=activity.university._id)
+          input.general-select-input-search#university-search-input(type='text' value=activity.university.name placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#university-options-wrapper
+            each university in universities
+              .general-select-input-each-option(id='select-input-' + university._id)= university.name
+        .general-form-input-title.general-form-input-title-required Cinsiyet
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#gender-input(type='text' value=activity.gender)
+          input.general-select-input-search#university-search-input(type='text' value=gender_names[activity.gender] placeholder='Listeden Seçin')
+          .general-select-input-options-wrapper#university-options-wrapper
+            each key in Object.keys(gender_names)
+              .general-select-input-each-option(id='select-input-' + key)= gender_names[key]
+        .general-form-button-wrapper
+          a.general-form-back-button(href='/activity') Vazgeç
+          .general-form-button#save-button Kaydet
+        .general-form-error#error
+      .general-form-wrapper
+        .general-form-input-title Teknik Toplantı
+        .general-form-input-title Tarihi
+        input.general-date-input#technique-meeting-date-input(type='date' value=(activity.technique_meeting.time.date ? activity.technique_meeting.time.date.split('.').reverse().join('-') : '') placeholder='Lütfen seçiniz')
+        .general-form-input-title Saati
+        input.general-date-input#technique-meeting-hour-input(type='time' value=(activity.technique_meeting.time.hour ? activity.technique_meeting.time.hour : '') placeholder='Lütfen seçiniz')
+        .general-form-input-title Yeri
+        input.general-text-input-small#technique-meeting-place-input(type='text' value=activity.technique_meeting.place placeholder='Yeri')
+    .general-form-right-column
+      .general-form-wrapper
+        .general-form-input-title Notlar
+        input.general-text-input-small#other-details-input(type='text' value=activity.other_details placeholder='Notlar')
+        .general-form-input-title Ayarlar
+        .general-checked-input-wrapper#is-active-input
+          if activity.is_active
+            .general-checked-input-item.general-checked-input-item-selected Aktif
+          else
+            .general-checked-input-item Aktif
+        .general-checked-input-wrapper#is-on-calendar-input
+          if activity.is_on_calendar
+            .general-checked-input-item.general-checked-input-item-selected Takvimde Görünür
+          else
+            .general-checked-input-item Takvimde Görünür
+        .general-checked-input-wrapper#is-without-age-control-input
+          if activity.is_without_age_control
+            .general-checked-input-item.general-checked-input-item-selected Yaş Kontrolü Yok
+          else
+            .general-checked-input-item Yaş Kontrolü Yok
+        .general-form-input-title Sporcu Sayısı
+        input.general-text-input-small#athlete-count-input(type='number' value=activity.athlete_count placeholder='Sporcu Sayısı')
+        .general-form-input-title Yabancı Sporcu Sayısı
+        input.general-text-input-small#foreign-athlete-count-input(type='number' value=activity.foreign_athlete_count placeholder='Yabancı Sporcu Sayısı')
+      .general-form-wrapper
+        .general-form-input-title Başlangıç Tarihi
+        input.general-date-input#start-date-input(type='date' value=activity.start_date.split('.').reverse().join('-') placeholder='Lütfen seçiniz')
+        .general-form-input-title Bitiş Tarihi
+        input.general-date-input#end-date-input(type='date' value=activity.end_date.split('.').reverse().join('-') placeholder='Lütfen seçiniz')
+        .general-form-input-title Son Başvuru Tarihi
+        input.general-date-input#last-application-date-input(type='date' value=activity.last_application_date.split('.').reverse().join('-') placeholder='Lütfen seçiniz')
+      .general-form-wrapper
+        .general-form-input-title Federasyon Temsilcisi
+        .general-form-input-title Adı Soyadı
+        input.general-text-input-small#federation-representative-name-input(type='text' value=activity.federation_representative.name placeholder='Adı Soyadı')
+        .general-form-input-title Telefon Numarası
+        input.general-text-input-small#federation-representative-phone-input(type='text' value=activity.federation_representative.phone_number placeholder='Telefon Numarası (0XXX XXX XX XX)')
+      
