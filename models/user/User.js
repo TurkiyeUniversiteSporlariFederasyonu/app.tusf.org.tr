@@ -83,7 +83,6 @@ const UserSchema = new Schema({
   },
   id_number: {
     type: String,
-    unique: true,
     trim: true,
     sparse: true,
     length: ID_NUMBER_LENGTH,
@@ -227,6 +226,7 @@ UserSchema.statics.findUserByIdAndUpdate = function (id, data, callback) {
       title: data.title && typeof data.title == 'string' && data.title.trim().length ? data.title.trim() : user.title,
       id_number: data.id_number && typeof data.id_number == 'string' && data.id_number.trim().length == ID_NUMBER_LENGTH ? data.id_number.trim() : user.id_number,
     }}, { new: true }, (err, user) => {
+      if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
       if (err) return callback('database_error');
 
       isUserReadyToBeComplete(user, (err, res) => {
