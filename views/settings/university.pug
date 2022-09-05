@@ -17,6 +17,13 @@ block main
         .general-form-button#save-button Kaydet
       .general-form-error#error
     .general-form-wrapper
+      .general-form-input-title.general-form-input-title-required Üniversitenin Tipi
+      .general-select-input-wrapper
+        input.general-select-input-value.display-none#type-input(type='text' value=university.type)
+        input.general-select-input-search#type-search-input(type='text' placeholder='Listeden Seçin' value=(university.type ? type_names[university.type] : ''))
+        .general-select-input-options-wrapper#type-options-wrapper
+          each type_value in Object.keys(type_names)
+            .general-select-input-each-option(id='select-input-' + type_value)= type_names[type_value]
       .general-form-input-title.general-form-input-title-required  Üniversitenin Rektörü
       input.general-text-input-small#rector-input(type='text' placeholder='Üniversitenin Rektörü' value=university.rector)
       .general-form-input-title.general-form-input-title-required Üniversite Logosu

@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
         if (!res.success)
           return error.innerHTML = 'Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
         
-        return window.location = '/';
+        return window.location = '/settings';
       });
     }
   });

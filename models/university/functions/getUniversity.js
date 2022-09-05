@@ -7,6 +7,7 @@ module.exports = (university, callback) => {
     is_cyprus_university: university.is_cyprus_university,
     name: university.name,
     is_completed: university.is_completed,
+    type: university.type,
     logo: university.logo,
     short_name: university.short_name,
     city: university.city,
