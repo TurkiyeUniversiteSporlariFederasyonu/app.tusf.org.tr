@@ -17,19 +17,37 @@ block main
         if participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime()
           .general-form-button#save-button Güncelle
       .general-form-error#error
+    .general-form-wrapper-empty
     .general-form-wrapper
-      .general-form-input-title Seçilen Branşlar
+      .general-form-input-title Seçilen Branşlar (Kadın)
       if !participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime() 
-        .general-checked-input-wrapper#branches-input
+        .general-checked-input-wrapper#female-branches-input
           each branch in branches
-            if participation.branch_id_list.includes(branch._id.toString())
+            if participation.female_branch_id_list.includes(branch._id.toString())
               .general-checked-input-item.general-checked-input-item-selected(id='checked-input-' + branch._id)= branch.name
             else
               .general-checked-input-item(id='checked-input-' + branch._id)= branch.name
       else
-        .general-checked-input-wrapper#branches-input
+        .general-checked-input-wrapper#female-branches-input
           each branch in branches
-            if participation.branch_id_list.includes(branch._id.toString())
+            if participation.female_branch_id_list.includes(branch._id.toString())
               .general-checked-input-item-not-allowed.general-checked-input-item-selected= branch.name
             else
               .general-checked-input-item-not-allowed= branch.name
+    .general-form-wrapper
+      .general-form-input-title Seçilen Branşlar (Erkek)
+      if !participation_update_start_date.getTime() < (new Date()).getTime() && participation_update_end_date.getTime() + (24 * 60 * 60 * 1000) > (new Date()).getTime() 
+        .general-checked-input-wrapper#male-branches-input
+          each branch in branches
+            if participation.male_branch_id_list.includes(branch._id.toString())
+              .general-checked-input-item.general-checked-input-item-selected(id='checked-input-' + branch._id)= branch.name
+            else
+              .general-checked-input-item(id='checked-input-' + branch._id)= branch.name
+      else
+        .general-checked-input-wrapper#male-branches-input
+          each branch in branches
+            if participation.male_branch_id_list.includes(branch._id.toString())
+              .general-checked-input-item-not-allowed.general-checked-input-item-selected= branch.name
+            else
+              .general-checked-input-item-not-allowed= branch.name
+    

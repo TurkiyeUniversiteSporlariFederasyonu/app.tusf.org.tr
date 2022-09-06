@@ -7,9 +7,11 @@ const Branch = require('../branch/Branch');
 const University = require('../university/University');
 const Year = require('../year/Year');
 
+const gender_values = ['female', 'male'];
+
 const MAX_DATABASE_TEXT_FIELD_LENGTH = 1e4;
 const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
-const MAX_ITEM_COUNT_PER_QUERY = 11e300;
+const MAX_ITEM_COUNT_PER_QUERY = 1e3;
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 const Schema = mongoose.Schema;
@@ -27,31 +29,47 @@ const ParticipationSchema = new Schema({
     required: true,
     index: true
   },
-  branch_id_list: {
+  female_branch_id_list: {
     type: Array,
     default: [],
     maxlength: MAX_DATABASE_ARRAY_FIELD_LENGTH
   },
-  branch_id_list_length: {
+  male_branch_id_list: {
+    type: Array,
+    default: [],
+    maxlength: MAX_DATABASE_ARRAY_FIELD_LENGTH
+  },
+  female_branch_id_list_length: {
+    type: Number,
+    default: 0,
+    max: MAX_DATABASE_ARRAY_FIELD_LENGTH
+  },
+  male_branch_id_list_length: {
     type: Number,
     default: 0,
     max: MAX_DATABASE_ARRAY_FIELD_LENGTH
   }
 });
 
-ParticipationSchema.statics.findParticipationByUniversityIdAndPushBranch = function (university_id, branch_id, callback) {
+ParticipationSchema.statics.findParticipationByUniversityIdAndPushBranch = function (university_id, data, callback) {
   const Participation = this;
+
+  if (!data || typeof data != 'object')
+    return callback('bad_request');
+
+  if (!data.gender || !gender_values.includes(data.gender))
+    return callback('bad_request');
 
   University.findUniversityById(university_id, (err, university) => {
     if (err) return callback(err);
 
-    Branch.findBranchById(branch_id, (err, branch) => {
+    Branch.findBranchById(data.branch_id, (err, branch) => {
       if (err) return callback(err);
   
       Participation.findOne({
         season: getCurrentSeason(),
         university_id: university._id,
-        branch_id_list: branch._id
+        [data.gender + '_branch_id_list']: branch._id
       }, (err, participation) => {
         if (err) return callback('database_error');
         if (participation)
@@ -60,14 +78,14 @@ ParticipationSchema.statics.findParticipationByUniversityIdAndPushBranch = funct
         Participation.findOne({
           season: getCurrentSeason(),
           university_id: university._id,
-          branch_id_list_length: { $lt: MAX_DATABASE_ARRAY_FIELD_LENGTH }
+          [data.gender +  '_branch_id_list_length']: { $lt: MAX_DATABASE_ARRAY_FIELD_LENGTH }
         }, (err, participation) => {
           if (err) return callback('database_error');
 
           if (participation) {
             Participation.findByIdAndUpdate(participation._id, {
-              $push: { branch_id_list: branch._id },
-              $inc: { branch_id_list_length: 1 }
+              $push: { [data.gender + '_branch_id_list']: branch._id },
+              $inc: { [data.gender +  '_branch_id_list_length']: 1 }
             }, err => {
               if (err) return callback('database_error');
 
@@ -77,8 +95,8 @@ ParticipationSchema.statics.findParticipationByUniversityIdAndPushBranch = funct
             const newParticipationData = {
               season: getCurrentSeason(),
               university_id: university._id,
-              branch_id_list: [ branch._id ],
-              branch_id_list_length: 1
+              [data.gender + '_branch_id_list']: [ branch._id ],
+              [data.gender +  '_branch_id_list_length']: 1
             };
 
             const newParticipation = new Participation(newParticipationData);
@@ -95,27 +113,33 @@ ParticipationSchema.statics.findParticipationByUniversityIdAndPushBranch = funct
   });
 };
 
-ParticipationSchema.statics.findParticipationByUniversityIdAndPullBranch = function (university_id, branch_id, callback) {
+ParticipationSchema.statics.findParticipationByUniversityIdAndPullBranch = function (university_id, data, callback) {
   const Participation = this;
+
+  if (!data || typeof data != 'object')
+    return callback('bad_request');
+
+  if (!data.gender || !gender_values.includes(data.gender))
+    return callback('bad_request');
 
   University.findUniversityById(university_id, (err, university) => {
     if (err) return callback(err);
 
-    Branch.findBranchById(branch_id, (err, branch) => {
+    Branch.findBranchById(data.branch_id, (err, branch) => {
       if (err) return callback(err);
   
       Participation.findOne({
         season: getCurrentSeason(),
         university_id: university._id,
-        branch_id_list: branch._id
+        [data.gender + '_branch_id_list']: branch._id
       }, (err, participation) => {
         if (err) return callback('database_error');
         if (!participation)
           return callback(null);
 
         Participation.findByIdAndUpdate(participation._id, {
-          $pull: { branch_id_list: branch._id },
-          $inc: { branch_id_list_length: -1 }
+          $pull: { [data.gender + '_branch_id_list']: branch._id },
+          $inc: { [data.gender + '_branch_id_list_length']: -1 }
         }, err => {
           if (err) return callback('database_error');
 
@@ -129,10 +153,15 @@ ParticipationSchema.statics.findParticipationByUniversityIdAndPullBranch = funct
 ParticipationSchema.statics.findParticipationByUniversityIdAndUpdateBranches = function (university_id, data, callback) { // O(n^2) - not optimized
   const Participation = this;
 
-  if (!data.branch_id_list || !Array.isArray(data.branch_id_list))
+  if (!data.female_branch_id_list || !Array.isArray(data.female_branch_id_list))
     return callback('bad_request');
 
-  data.branch_id_list = data.branch_id_list.map(each => each.toString());
+  data.female_branch_id_list = data.female_branch_id_list.map(each => each.toString());
+
+  if (!data.male_branch_id_list || !Array.isArray(data.male_branch_id_list))
+    return callback('bad_request');
+
+  data.male_branch_id_list = data.male_branch_id_list.map(each => each.toString());
 
   Year.findCurrentYear((err, year) => {
     if (err) return callback(err);
@@ -163,10 +192,42 @@ ParticipationSchema.statics.findParticipationByUniversityIdAndUpdateBranches = f
               async.timesSeries(
                 branches.length,
                 (time, next) => {
-                  if (data.branch_id_list.includes(branches[time]._id.toString()))
-                    Participation.findParticipationByUniversityIdAndPushBranch(university._id, branches[time]._id, err => next(err));
+                  if (data.female_branch_id_list.includes(branches[time]._id.toString()))
+                    Participation.findParticipationByUniversityIdAndPushBranch(university._id, {
+                      gender: 'female',
+                      branch_id: branches[time]._id
+                    }, err => {
+                      if (err) return next(err);
+
+                      if (data.male_branch_id_list.includes(branches[time]._id.toString()))
+                        Participation.findParticipationByUniversityIdAndPushBranch(university._id, {
+                          gender: 'male',
+                          branch_id: branches[time]._id
+                        }, err => next(err));
+                      else
+                        Participation.findParticipationByUniversityIdAndPullBranch(university._id, {
+                          gender: 'male',
+                          branch_id: branches[time]._id
+                        }, err => next(err));
+                    });
                   else
-                    Participation.findParticipationByUniversityIdAndPullBranch(university._id, branches[time]._id, err => next(err));
+                    Participation.findParticipationByUniversityIdAndPullBranch(university._id, {
+                      gender: 'female',
+                      branch_id: branches[time]._id
+                    }, err => {
+                      if (err) return next(err);
+
+                      if (data.male_branch_id_list.includes(branches[time]._id.toString()))
+                        Participation.findParticipationByUniversityIdAndPushBranch(university._id, {
+                          gender: 'male',
+                          branch_id: branches[time]._id
+                        }, err => next(err));
+                      else
+                        Participation.findParticipationByUniversityIdAndPullBranch(university._id, {
+                          gender: 'male',
+                          branch_id: branches[time]._id
+                        }, err => next(err));
+                    });
                 },
                 err => {
                   if (err) return next(err);
@@ -204,7 +265,8 @@ ParticipationSchema.statics.findParticipationsBySeasonAndByUniversityIdAndFormat
 
       const data = {
         season,
-        branch_id_list: []
+        female_branch_id_list: [],
+        male_branch_id_list: []
       }
 
       async.timesSeries(
@@ -213,17 +275,31 @@ ParticipationSchema.statics.findParticipationsBySeasonAndByUniversityIdAndFormat
           const participation = participations[time];
 
           async.timesSeries(
-            participation.branch_id_list.length,
-            (time, next) => Branch.findBranchById(participation.branch_id_list[time], (err, branch) => {
+            participation.female_branch_id_list.length,
+            (time, next) => Branch.findBranchById(participation.female_branch_id_list[time], (err, branch) => {
               if (err) return next(err);
 
               return next(null, branch._id.toString());
             }),
-            (err, branch_id_list) => {
+            (err, female_branch_id_list) => {
               if (err) return next(err);
 
-              data.branch_id_list = data.branch_id_list.concat(branch_id_list);
-              return next(null);
+              data.female_branch_id_list = data.female_branch_id_list.concat(female_branch_id_list);
+              
+              async.timesSeries(
+                participation.male_branch_id_list.length,
+                (time, next) => Branch.findBranchById(participation.male_branch_id_list[time], (err, branch) => {
+                  if (err) return next(err);
+    
+                  return next(null, branch._id.toString());
+                }),
+                (err, male_branch_id_list) => {
+                  if (err) return next(err);
+    
+                  data.male_branch_id_list = data.male_branch_id_list.concat(male_branch_id_list);
+                  return next(null);
+                }
+              );
             }
           );
         },
