@@ -2,3 +2,10 @@
   padding-top: var(--page-padding);
   padding-bottom: var(--page-padding);
 }
+
+.public-university-settings-wrapper,  .private-university-settings-wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  flex-direction: column;
+}

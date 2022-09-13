@@ -52,6 +52,14 @@
   margin-left: 5px;
 }
 
+.general-form-input-text {
+  color: var(--light-black);
+  font-weight: 400;
+  font-size: var(--small-text-font-size);
+  margin-bottom: var(--small-distance);
+  width: var(--input-width);
+}
+
 .general-form-input-info {
   color: var(--blue);
   font-weight: 600;

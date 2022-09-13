@@ -7,41 +7,57 @@ block main
     .general-each-bread-cramp-arrow >
     .general-each-bread-cramp-item-last Üniversite Ayarları
   .general-form-outer-wrapper
-    .general-form-wrapper
-      .general-form-input-title.general-form-input-title-required Üniversite Adı
-      .general-text-input-small-not-allowed= university.name
-      .general-form-input-title.general-form-input-title-required Üniversitenin Kısa Adı
-      input.general-text-input-small#short-name-input(type='text' placeholder='Üniversitenin Kısa Adı' value=university.short_name)
-      .general-form-button-wrapper
-        a.general-form-back-button(href='/university') Vazgeç
-        .general-form-button#save-button Kaydet
-      .general-form-error#error
-    .general-form-wrapper
-      .general-form-input-title.general-form-input-title-required Üniversitenin Tipi
-      .general-select-input-wrapper
-        input.general-select-input-value.display-none#type-input(type='text' value=university.type)
-        input.general-select-input-search#type-search-input(type='text' placeholder='Listeden Seçin' value=(university.type ? type_names[university.type] : ''))
-        .general-select-input-options-wrapper#type-options-wrapper
-          each type_value in Object.keys(type_names)
-            .general-select-input-each-option(id='select-input-' + type_value)= type_names[type_value]
-      .general-form-input-title.general-form-input-title-required  Üniversitenin Rektörü
-      input.general-text-input-small#rector-input(type='text' placeholder='Üniversitenin Rektörü' value=university.rector)
-      .general-form-input-title.general-form-input-title-required Üniversite Logosu
-      .general-image-input-outer-wrapper#logo-input-wrapper
-        if university.logo
-          .general-image-input-outer-wrapper
-            .general-image-input-wrapper
-              img.general-image-input-wrapper-image(src=university.logo)
-              i.general-delete-image-button.fas.fa-times
-        else
-          label.general-choose-image-input-text
-            span Bilgisayarınızdan seçmek için tıklayın.
-            input.display-none.general-image-input(type='file' accept='image/*')
-      .general-form-input-title.general-form-input-title-required Üniversitenin Şehri
-      .general-select-input-wrapper
-        input.general-select-input-value.display-none#city-input(type='text' value=university.city)
-        input.general-select-input-search#city-search-input(type='text' placeholder='Listeden Seçin' value=university.city)
-        .general-select-input-options-wrapper#city-options-wrapper
-          each city in cities
-            .general-select-input-each-option(id='select-input-' + city)= city
+    .general-form-left-column
+      .general-form-wrapper
+        .general-form-input-title.general-form-input-title-required Üniversite Adı
+        .general-text-input-small-not-allowed= university.name
+        .general-form-input-title.general-form-input-title-required Üniversitenin Kısa Adı
+        input.general-text-input-small#short-name-input(type='text' placeholder='Üniversitenin Kısa Adı' value=university.short_name)
+        .general-form-button-wrapper
+          a.general-form-back-button(href='/university') Vazgeç
+          .general-form-button#save-button Kaydet
+        .general-form-error#error
+      .general-form-wrapper
+        .public-university-settings-wrapper(style=(university.type == 'private' ? 'display: none' : 'display: flex'))
+          .general-form-input-title.general-form-input-title-required Üniversite Sağlık, Kültür ve Spor Daire Başkanlığı
+          input.general-text-input-small#public-health-culture-and-sport-department-president-input(type='text' placeholder='Üniversite Sağlık, Kültür ve Spor Daire Başkanlığı' value=university.health_culture_and_sport_department_president)
+          .general-form-input-title Üniversite Spor Bilimleri Fakültesi Dekanlığı
+          input.general-text-input-small#public-sport-sciences-dean-input(type='text' placeholder='Üniversite Spor Bilimleri Fakültesi Dekanlığı' value=university.sport_sciences_dean)
+          .general-form-input-title.general-form-input-title-required Üniversite Beden Eğitimi ve Yüksekokul Müdürlüğü
+          input.general-text-input-small#public-sport-high-education-president-input(type='text' placeholder='Üniversite Beden Eğitimi ve Yüksekokul Müdürlüğü' value=university.sport_high_education_president)
+        .private-university-settings-wrapper(style=(university.type == 'private' ? 'display: flex' : 'display: none'))
+          .general-form-input-title.general-form-input-title-required Üniversite Sağlık, Kültür ve Spor Daire Başkanlığı
+          .general-form-input-text Eğer Daire Başkanlığı yoksa lütfen Spor Koordinatörlüğünü girin
+          input.general-text-input-small#private-health-culture-and-sport-department-president-input(type='text' placeholder='Üniversite Sağlık, Kültür ve Spor Daire Başkanlığı' value=university.health_culture_and_sport_department_president)
+          .general-form-input-title Üniversite Spor Bilimleri Fakültesi Dekanlığı
+          input.general-text-input-small#private-sport-sciences-dean-input(type='text' placeholder='Üniversite Spor Bilimleri Fakültesi Dekanlığı' value=university.sport_sciences_dean)
+    .general-form-right-column
+      .general-form-wrapper
+        .general-form-input-title.general-form-input-title-required Üniversitenin Tipi
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#type-input(type='text' value=university.type)
+          input.general-select-input-search#type-search-input(type='text' placeholder='Listeden Seçin' value=(university.type ? type_names[university.type] : ''))
+          .general-select-input-options-wrapper#type-options-wrapper
+            each type_value in Object.keys(type_names)
+              .general-select-input-each-option.select-each-university-type-option(id='select-input-' + type_value)= type_names[type_value]
+        .general-form-input-title.general-form-input-title-required  Üniversitenin Rektörü
+        input.general-text-input-small#rector-input(type='text' placeholder='Üniversitenin Rektörü' value=university.rector)
+        .general-form-input-title.general-form-input-title-required Üniversite Logosu
+        .general-image-input-outer-wrapper#logo-input-wrapper
+          if university.logo
+            .general-image-input-outer-wrapper
+              .general-image-input-wrapper
+                img.general-image-input-wrapper-image(src=university.logo)
+                i.general-delete-image-button.fas.fa-times
+          else
+            label.general-choose-image-input-text
+              span Bilgisayarınızdan seçmek için tıklayın.
+              input.display-none.general-image-input(type='file' accept='image/*')
+        .general-form-input-title.general-form-input-title-required Üniversitenin Şehri
+        .general-select-input-wrapper
+          input.general-select-input-value.display-none#city-input(type='text' value=university.city)
+          input.general-select-input-search#city-search-input(type='text' placeholder='Listeden Seçin' value=university.city)
+          .general-select-input-options-wrapper#city-options-wrapper
+            each city in cities
+              .general-select-input-each-option(id='select-input-' + city)= city
       

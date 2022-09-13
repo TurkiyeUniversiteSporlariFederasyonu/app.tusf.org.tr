@@ -13,6 +13,12 @@ const MAX_ITEM_COUNT_PER_QUERY = 1e3;
 const type_values = ['public', 'private'];
 const city_values = ['Adana', 'Adıyaman', 'Afyon', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin', 'Aydın', 'Balıkesir', 'Bilecik', 'Bingöl', 'Bitlis', 'Bolu', 'Burdur', 'Bursa', 'Çanakkale', 'Çankırı', 'Çorum', 'Denizli', 'Diyarbakır', 'Edirne', 'Elazığ', 'Erzincan', 'Erzurum', 'Eskişehir',  'Gaziantep', 'Giresun', 'Gümüşhane', 'Hakkari', 'Hatay', 'Isparta', 'Mersin', 'İstanbul', 'İzmir',   'Kars', 'Kastamonu', 'Kayseri', 'Kırklareli', 'Kırşehir', 'Kocaeli', 'Konya', 'Kütahya', 'Malatya',   'Manisa', 'Kahramanmaraş', 'Mardin', 'Muğla', 'Muş', 'Nevşehir', 'Niğde', 'Ordu', 'Rize', 'Sakarya',  'Samsun', 'Siirt', 'Sinop', 'Sivas', 'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Şanlıurfa', 'Uşak',  'Van', 'Yozgat', 'Zonguldak', 'Aksaray', 'Bayburt', 'Karaman', 'Kırıkkale', 'Batman', 'Şırnak',  'Bartın', 'Ardahan', 'Iğdır', 'Yalova', 'Karabük', 'Kilis', 'Osmaniye', 'Düzce'];
 const cyprus_city_values = ['Gazimağusa', 'Girne', 'Güzelyurt', 'İskele', 'Lefke', 'Lefkoşa'];
+const position_names = {
+  rector: 'Rektörlük',
+  health_culture_and_sport_department_president: 'Sağlık Kültür ve Spor Daire Başkanlığı',
+  sport_sciences_dean: 'Spor Bilimleri Fakültesi Dekanlığı',
+  sport_high_education_president: 'Beden Eğitimi ve Spor Yüksekokulu Müdürlüğü'
+};
 
 const Schema = mongoose.Schema;
 
@@ -68,6 +74,27 @@ const UniversitySchema = new Schema({
     minlength: 1,
     maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
   },
+  health_culture_and_sport_department_president: {
+    type: String,
+    default: null,
+    trim: true,
+    minlength: 1,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  sport_sciences_dean: {
+    type: String,
+    default: null,
+    trim: true,
+    minlength: 1,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  sport_high_education_president: {
+    type: String,
+    default: null,
+    trim: true,
+    minlength: 1,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  }
 });
 
 UniversitySchema.statics.findUniversityById = function (id, callback) {
@@ -88,14 +115,30 @@ UniversitySchema.statics.findUniversityByIdAndFormat = function (id, callback) {
   const University = this;
 
   University.findUniversityById(id, (err, university) => {
-    if (err)
-      return callback(err);
+    if (err) return callback(err);
 
-    getUniversity(university, (err, university) => {
-      if (err)
-        return callback(err);
+    isUniversityReadyToBeComplete(university, (err, res) => {
+      if (err) return callback(err);
 
-      return callback(null, university);
+      if (res == university.is_completed) {
+        getUniversity(university, (err, university) => {
+          if (err) return callback(err);
+    
+          return callback(null, university);
+        });
+      } else {
+        University.findByIdAndUpdate(university._id, {$set: {
+          is_completed: res
+        }}, { new: true }, (err, university) => {
+          if (err) return callback('database_error');
+  
+          getUniversity(university, (err, university) => {
+            if (err) return callback(err);
+      
+            return callback(null, university);
+          });
+        });
+      }
     });
   });
 };
@@ -121,6 +164,9 @@ UniversitySchema.statics.findUniversityByIdAndUpdate = function (id, data, callb
         short_name: data.short_name && typeof data.short_name == 'string' && data.short_name.trim().length && data.short_name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.short_name.trim() : university.short_name,
         city: (data.city && (data.is_cyprus_university ? cyprus_city_values : city_values).includes(data.city)) ? data.city : university.city,
         rector: data.rector && typeof data.rector && data.rector.trim().length ? data.rector : university.rector,
+        health_culture_and_sport_department_president: data.health_culture_and_sport_department_president && typeof data.health_culture_and_sport_department_president && data.health_culture_and_sport_department_president.trim().length ? data.health_culture_and_sport_department_president : university.health_culture_and_sport_department_president,
+        sport_sciences_dean: data.sport_sciences_dean && typeof data.sport_sciences_dean && data.sport_sciences_dean.trim().length ? data.sport_sciences_dean : null,
+        sport_high_education_president: data.sport_high_education_president && typeof data.sport_high_education_president && data.sport_high_education_president.trim().length ? data.sport_high_education_president : university.sport_high_education_president,
         logo: data.logo
       }}, { new: true }, (err, university) => {
         if (err)

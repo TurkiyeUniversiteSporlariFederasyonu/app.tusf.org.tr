@@ -11,6 +11,9 @@ module.exports = (university, callback) => {
     logo: university.logo,
     short_name: university.short_name,
     city: university.city,
-    rector: university.rector
+    rector: university.rector,
+    health_culture_and_sport_department_president: university.health_culture_and_sport_department_president,
+    sport_sciences_dean: university.sport_sciences_dean,
+    sport_high_education_president: university.sport_high_education_president
   });
 }
