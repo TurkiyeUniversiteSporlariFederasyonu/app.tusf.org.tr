@@ -133,14 +133,30 @@ UserSchema.statics.findUserByIdAndFormat = function (id, callback) {
   const User = this;
 
   User.findUserById(id, (err, user) => {
-    if (err)
-      return callback(err);
+    if (err) return callback(err);
 
-    getUser(user, (err, user) => {
-      if (err)
-        return callback(err);
+    isUserReadyToBeComplete(user, (err, res) => {
+      if (err) return callback(err);
 
-      return callback(null, user);
+      if (res == user.is_completed) {
+        getUser(user, (err, user) => {
+          if (err) return callback(err);
+    
+          return callback(null, user);
+        });
+      } else {
+        User.findByIdAndUpdate(user._id, {$set: {
+          is_completed: res
+        }}, { new: true }, (err, user) => {
+          if (err) return callback('database_error');
+  
+          getUser(user, (err, user) => {
+            if (err) return callback(err);
+      
+            return callback(null, user);
+          });
+        });
+      }
     });
   });
 };
