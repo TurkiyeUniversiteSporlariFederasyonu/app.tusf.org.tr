@@ -140,3 +140,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media only screen and (max-width: 500px) {
+  :root {
+    --form-button-width: 100px;
+    --form-button-height: 30px;
+  }
+  .general-form-button, .general-form-back-button {
+    font-size: var(--text-font-size);
+  }
+}
