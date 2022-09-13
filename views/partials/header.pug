@@ -23,14 +23,14 @@ block content
           //-       a.each-all-header-menu-button(href='/activity/old') Geçmiş Faaliyetler
           //-       a.each-all-header-menu-button(href='/activity/join') Üniversitenin Katıldığı Faaliyetler
           //- .each-all-header-menu-wrapper
-          //-   .each-all-header-menu-title-wrapper
-          //-     svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--white)' xmlns='http://www.w3.org/2000/svg')
-          //-       path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
-          //-     .each-all-header-menu-title Öğrenciler
-          //-   .each-all-header-menu
-          //-     a.each-all-header-menu-button(href='/student') Üniversite Öğrencileri
-          //-     a.each-all-header-menu-button(href='/student/create') Öğrenci Ekle
-          //-     a.each-all-header-menu-button(href='/student/delete') Silinen Öğrenciler
+          //- //-   .each-all-header-menu-title-wrapper
+          //- //-     svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--white)' xmlns='http://www.w3.org/2000/svg')
+          //- //-       path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+          //- //-     .each-all-header-menu-title Öğrenciler
+          //- //-   .each-all-header-menu
+          //- //-     a.each-all-header-menu-button(href='/student') Üniversite Öğrencileri
+          //- //-     a.each-all-header-menu-button(href='/student/create') Öğrenci Ekle
+          //- //-     a.each-all-header-menu-button(href='/student/delete') Silinen Öğrenciler
           //- .each-all-header-menu-wrapper
             .each-all-header-menu-title-wrapper
               svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--white)' xmlns='http://www.w3.org/2000/svg')
@@ -51,5 +51,59 @@ block content
             a.each-all-header-menu-button(href='/auth/logout') Çıkış Yap
       .all-header-user-name= user.name
       a.all-header-logout-button(href='/auth/logout') Çıkış Yap
+    .all-header-responsive
+      a.all-header-logo(style='background-image: url(/res/images/logo.png)' href='/')
+      .all-header-user-name= user.name
+      svg.responsive-header-open-menu-button(width='61' height='43' viewBox='0 0 61 43' fill='none' xmlns='http://www.w3.org/2000/svg')
+        rect(x='0.5' y='42.5' width='7' height='60' rx='3.5' transform='rotate(-90 0.5 42.5)' fill='var(--white)')
+        rect(x='1' y='7' width='7' height='60' rx='3.5' transform='rotate(-90 1 7)' fill='var(--white)')
+        rect(x='1' y='25' width='7' height='60' rx='3.5' transform='rotate(-90 1 25)' fill='var(--white)')
+      .all-header-menu-wrapper-responsive-outer-wrapper(style='display: none')
+        .all-header-menu-wrapper-responsive
+          if user.is_completed && user.university.is_completed
+            .each-all-header-menu-wrapper-responsive
+                .each-all-header-menu-title-wrapper-responsive
+                  svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--light-black)' xmlns='http://www.w3.org/2000/svg')
+                    path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+                  .each-all-header-menu-title-responsive Branş Katılımı
+                .each-all-header-menu
+                  a.each-all-header-menu-button(href='/participation') Güncel Branş Katılımı
+                  a.each-all-header-menu-button(href='/participation/old') Geçmiş Branş Katılımı
+            //- .each-all-header-menu-wrapper-responsive
+            //-     .each-all-header-menu-title-wrapper-responsive
+            //-       svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--light-black)' xmlns='http://www.w3.org/2000/svg')
+            //-         path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+            //-       .each-all-header-menu-title-responsive Faaliyetler
+            //-     .each-all-header-menu
+            //-       a.each-all-header-menu-button(href='/activity') Faaliyetler
+            //-       a.each-all-header-menu-button(href='/activity/old') Geçmiş Faaliyetler
+            //-       a.each-all-header-menu-button(href='/activity/join') Üniversitenin Katıldığı Faaliyetler
+            //- .each-all-header-menu-wrapper-responsive
+            //-   .each-all-header-menu-title-wrapper-responsive
+            //-     svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--light-black)' xmlns='http://www.w3.org/2000/svg')
+            //-       path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+            //-     .each-all-header-menu-title-responsive Öğrenciler
+            //-   .each-all-header-menu
+            //-     a.each-all-header-menu-button(href='/student') Üniversite Öğrencileri
+            //-     a.each-all-header-menu-button(href='/student/create') Öğrenci Ekle
+            //-     a.each-all-header-menu-button(href='/student/delete') Silinen Öğrenciler
+            //- .each-all-header-menu-wrapper-responsive
+              .each-all-header-menu-title-wrapper-responsive
+                svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--light-black)' xmlns='http://www.w3.org/2000/svg')
+                  path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+                .each-all-header-menu-title-responsive İstatistikler
+              .each-all-header-menu
+                a.each-all-header-menu-button(href='/statistics/medal') Madalya Sıralaması
+                a.each-all-header-menu-button(href='/statistics/activity') Faaliyet İstatistikleri
+          .each-all-header-menu-wrapper-responsive
+            .each-all-header-menu-title-wrapper-responsive
+              svg.each-all-header-menu-title-icon(viewBox='0 0 140 84' fill='var(--light-black)' xmlns='http://www.w3.org/2000/svg')
+                path(d='M135.887 23.8875L80.2806 79.8875C77.1744 82.6438 73.5869 84 69.9994 84C66.4119 84 62.8331 82.6328 60.0988 79.8984L4.49251 23.8984C0.0975633 19.9062 -1.10136 13.8688 1.06601 8.6625C3.23339 3.45625 8.34251 0 13.9994 0H125.606C131.267 0 136.377 3.40419 138.547 8.64062C140.717 13.8771 139.912 19.9063 135.887 23.8875Z')
+              .each-all-header-menu-title-responsive Ayarlar
+            .each-all-header-menu
+              a.each-all-header-menu-button(href='/settings') Kullanıcı Ayarları
+              a.each-all-header-menu-button(href='/settings/university') Üniversite Ayarları
+              a.each-all-header-menu-button(href='/settings/password') Şifreyi Değiştir
+              a.each-all-header-menu-button(href='/auth/logout') Çıkış Yap
     .all-content
       block main
